@@ -6,6 +6,7 @@
   "types": "src/index.d.ts",
   "scripts": {
     "dev": "NODE_ENV=test nodemon src/index.ts",
+    "build": "npx swc ./src --out-dir dist",
     "lint": "eslint \"**/*.ts*\" --max-warnings 0 .",
     "lint:fix": "eslint --fix \"**/*.{js,ts,tsx}\"",
     "prettier": "prettier \"**/*.{js,ts,tsx,md,html,css,scss,json}\" --check --loglevel warn",
