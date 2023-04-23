@@ -1,6 +1,6 @@
 <script lang="ts">
-	// import { goto } from '$app/navigation';
-	import type { Display } from 'planning-poker-types';
+	import { goto } from '$app/navigation';
+	import { ZodRoomMapServer, type Display } from 'planning-poker-types';
 	import { onMount } from 'svelte';
 
 	export let data;
@@ -13,23 +13,28 @@
 	$: isHost = false;
 
 	onMount(() => {
-		// displays = data.room.displays;
+		displays = data.room.displays;
 		roomName = data.room.name;
 	});
 
-	function handleSubmit() {
-		// client.displays.createOrUpdate
-		// 	.mutate({
-		// 		display: {
-		// 			cardValue: 0,
-		// 			isHost,
-		// 			name: displayName
-		// 		},
-		// 		roomId: data.room.id
-		// 	})
-		// 	.then((data) => {
-		// 		goto(`/room/${data.id}/${displayName}`);
-		// 	});
+	async function handleSubmit() {
+		const res = await fetch('/api/displays', {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				roomId: data.room.id,
+				name: displayName,
+				cardValue: 0,
+				isHost
+			})
+		});
+
+		const room = ZodRoomMapServer.parse(await res.json());
+
+		goto(`/room/${room.id}/${displayName}`);
 	}
 </script>
 

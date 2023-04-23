@@ -45,12 +45,6 @@ const roomRoutes: FastifyPluginAsync = async (fastify) => {
         connection.socket
       );
 
-      connection.socket.on('message', () => {
-        // register unique ID for user (room id && display id);
-        // connection.socket.send();
-        console.log('message!!');
-      });
-
       connection.socket.on('close', () => {
         removeRoomDisplaySocket(request.params.id, request.params.displayId);
         console.log('disconnected from socket');

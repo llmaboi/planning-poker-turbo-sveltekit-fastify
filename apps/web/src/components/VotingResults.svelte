@@ -1,8 +1,13 @@
 <script lang="ts">
-	import type { Vote } from '../types/common.types';
+	import type { Display, Vote } from 'planning-poker-types';
 	import VoteItem from './VoteItem.svelte';
 
-	export let votes: Vote[];
+	export let displays: Display[];
+	let votes: Vote[];
+	$: votes = displays.map((display) => ({
+		name: display.name,
+		value: display.cardValue
+	}));
 
 	$: votedItems = votes.filter((vote) => vote.value > 0);
 	$: notVotedItems = votes.filter((vote) => vote.value <= 0);

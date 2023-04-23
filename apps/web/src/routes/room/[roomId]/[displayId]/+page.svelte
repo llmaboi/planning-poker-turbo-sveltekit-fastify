@@ -2,7 +2,13 @@
 	import Card from '@components/Card.svelte';
 	import DisplayHeading from '@components/DisplayHeading.svelte';
 	import VotingResults from '@components/VotingResults.svelte';
-	import type { Display, Room, Vote } from 'planning-poker-types';
+	import {
+		ZodRoomMapServer,
+		type Display,
+		type Room,
+		type Vote,
+		type RoomMapServer
+	} from 'planning-poker-types';
 	import { onMount } from 'svelte';
 
 	export let data;
@@ -11,84 +17,76 @@
 
 	// TODO: Data for cardValue
 	let currentDisplay: Display;
-	// $: currentDisplay;
+	$: currentDisplay;
 	let displays: Display[] = [];
 	$: displays = displays;
-	let room: Room;
+	let room: RoomMapServer;
 	$: room;
 
 	let roomVotes: Vote[] = [];
 
-	function updateData(displays: Display[]) {
-		displays = displays;
-		roomVotes = displays.map((display) => ({
-			name: display.name,
-			value: display.cardValue
-		}));
-
-		// const foundDisplay = displays.find((display) => display.name === data.currentDisplay.name);
-		// if (foundDisplay !== undefined) {
-		// 	currentDisplay = foundDisplay;
-		// }
-	}
-
 	onMount(() => {
 		room = data.room;
-		// currentDisplay = {
-		// 	cardValue: data.currentDisplay.cardValue ?? 0,
-		// 	isHost: data.currentDisplay.isHost ?? false,
-		// 	name: data.currentDisplay.name
-		// };
+		const foundDisplay = room.displays.find((display) => display.name === data.currentDisplay.name);
+		if (typeof foundDisplay === 'undefined') {
+			throw new Error('No display');
+		}
 
-		// client.rooms.socket.subscribe(
-		// 	{ roomId: data.room.id },
-		// 	{
-		// 		onData(data) {
-		// 			const newroom = {
-		// 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// 				// @ts-ignore
-		// 				id: data.id,
-		// 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// 				// @ts-ignore
-		// 				name: data.name,
-		// 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// 				// @ts-ignore
-		// 				label: data.label,
-		// 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// 				// @ts-ignore
-		// 				showVotes: data.showVotes
-		// 			};
-		// 			room = newroom;
-		// 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// 			// @ts-ignore
-		// 			typeof data?.displays !== 'undefined' && updateData(data.displays);
-		// 		}
-		// 	}
-		// );
+		currentDisplay = foundDisplay;
+
+		const socket = new WebSocket(
+			`ws://localhost:4040/api/rooms/${data.room.id}/${data.currentDisplay.name}/socket`
+		);
+
+		// Connection opened
+		socket.addEventListener('open', function (event) {
+			console.log("It's open");
+		});
+
+		// Listen for messages
+		socket.addEventListener('message', function (event) {
+			const newData = JSON.parse(event.data);
+			const updatedRoom = ZodRoomMapServer.parse(newData);
+			const updatedDisplay = updatedRoom.displays.find(
+				(display) => display.name === data.currentDisplay.name
+			);
+
+			if (typeof updatedDisplay !== 'undefined') {
+				currentDisplay = updatedDisplay;
+			}
+
+			room = updatedRoom;
+		});
 	});
 
-	function resetSelection() {
-		// client.displays.update.mutate({
-		// 	roomId: data.room.id,
-		// 	display: {
-		// 		...data.currentDisplay,
-		// 		isHost: data.currentDisplay.isHost ?? false,
-		// 		cardValue: 0
-		// 	}
-		// });
-		currentDisplay.cardValue = 0;
+	async function resetSelection() {
+		await fetch('/api/displays', {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				...data.currentDisplay,
+				cardValue: 0,
+				roomId: data.room.id
+			})
+		});
 	}
 
-	function updateDisplayCard(number: number) {
-		// client.displays.update.mutate({
-		// 	roomId: data.room.id,
-		// 	display: {
-		// 		isHost: data.currentDisplay?.isHost ?? false,
-		// 		cardValue: number,
-		// 		name: data.currentDisplay.name
-		// 	}
-		// });
-		currentDisplay.cardValue = number;
+	async function updateDisplayCard(number: number) {
+		await fetch('/api/displays', {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				...data.currentDisplay,
+				cardValue: number,
+				roomId: data.room.id
+			})
+		});
 	}
 </script>
 
@@ -96,7 +94,7 @@
 	<h1>{data.room.name}</h1>
 
 	{#if typeof room === 'object'}
-		<DisplayHeading data={{ room: room, isHost: currentDisplay.isHost }} />
+		<DisplayHeading data={{ room: room, isHost: currentDisplay?.isHost }} />
 	{/if}
 
 	<div class="ResetSelection">
@@ -119,7 +117,7 @@
 	</section>
 
 	{#if room?.showVotes}
-		<VotingResults votes={roomVotes} />
+		<VotingResults displays={room.displays} />
 	{/if}
 
 	<section class="PieChart">

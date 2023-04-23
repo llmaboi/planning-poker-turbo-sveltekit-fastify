@@ -1,20 +1,18 @@
-import type { Room } from 'planning-poker-types';
+import { ZodRoomMapServer } from 'planning-poker-types';
 
-export const load = async () => {
-	const room: Room = {
-		id: 'test',
-		label: 'testing label',
-		name: 'testing Name',
-		showVotes: false
-	};
+export const load = async ({ fetch, params }) => {
+	const res = await fetch(`/api/rooms/${params.roomId}`);
+	const data = await res.json();
 
-	// const currentDisplay = room.displays.find((display) => display.name === event.params.displayId);
+	const room = ZodRoomMapServer.parse(data);
+	const currentDisplay = room.displays.find((display) => display.name === params.displayId);
+
+	if (typeof currentDisplay === 'undefined') {
+		throw new Error('No display');
+	}
 
 	return {
-		room
-		// currentDisplay: {
-		// 	...currentDisplay,
-		// 	name: event.params.displayId
-		// }
+		room,
+		currentDisplay
 	};
 };

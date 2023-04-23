@@ -1,10 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { trpc } from '$lib/trpc/client';
-	import type { Room } from '@typings/common.types';
+	import type { Room } from 'planning-poker-types';
 	import { onMount } from 'svelte';
-
-	const client = trpc();
 
 	export let data: { room: Room; isHost: boolean };
 
@@ -14,51 +11,77 @@
 
 	$: isLoading = false;
 
-	onMount(() => {
-		roomLabel = data.room.label ?? '';
-	});
-
-	function handleLabelUpdate() {
+	async function handleLabelUpdate() {
 		isLoading = true;
-		client.rooms.update
-			.mutate({ ...data.room, label: roomLabel })
-			.then((data) => {
-				roomLabel = data.label;
+		await fetch(`/api/rooms/${data.room.id}`, {
+			method: 'PATCH',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				...data.room,
+				label: roomLabel
 			})
-			.finally(() => (isLoading = false));
+		});
+
+		roomLabel = '';
+
+		isLoading = false;
 	}
 
-	function handleCardReset() {
+	async function handleCardReset() {
 		isLoading = true;
-		client.rooms.reset.mutate({ id: data.room.id }).finally(() => (isLoading = false));
+		await fetch(`/api/rooms/${data.room.id}/card-reset`, {
+			method: 'PATCH',
+			headers: {
+				Accept: 'application/json'
+			}
+		});
+		isLoading = false;
 	}
 
 	function handleLogout() {
 		goto(`/`);
 	}
 
-	function handleShowVotes() {
+	async function handleShowVotes() {
 		isLoading = true;
-		client.rooms.update
-			.mutate({ ...data.room, showVotes: !data.room.showVotes })
-			.finally(() => (isLoading = false));
+		await fetch(`/api/rooms/${data.room.id}`, {
+			method: 'PATCH',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				...data.room,
+				showVotes: !data.room.showVotes
+			})
+		});
+
+		isLoading = false;
 	}
 </script>
 
 <section class="DisplayHeading">
 	<div class="firstRow">
-		{#if data.isHost}
+		{#if data.isHost === true}
 			<label id="room-label">
-				<input type="text" disabled={isLoading} bind:value={roomLabel} />
+				<input
+					placeholder={data.room.label}
+					type="text"
+					disabled={isLoading}
+					bind:value={roomLabel}
+				/>
 			</label>
 
 			<button disabled={isLoading} on:click={handleLabelUpdate}> Update label </button>
 		{:else}
-			<p>Room Label: {roomLabel.length > 0 ? roomLabel : 'No Room Label'}</p>
+			<p>Room Label: {data.room.label.length > 0 ? data.room.label : 'No Room Label'}</p>
 		{/if}
 	</div>
 
-	{#if data.isHost}
+	{#if data.isHost === true}
 		<div class="secondRow">
 			<button disabled={isLoading} on:click={handleCardReset}>Reset cards</button>
 

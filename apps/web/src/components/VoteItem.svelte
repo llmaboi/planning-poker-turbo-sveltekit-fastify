@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Vote } from '@typings/common.types';
+	import type { Vote } from 'planning-poker-types';
 
 	export let vote: Vote;
 </script>

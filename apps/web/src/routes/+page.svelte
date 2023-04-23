@@ -1,21 +1,28 @@
 <script lang="ts">
-	// import { goto } from '$app/navigation';
+	import { goto } from '$app/navigation';
+	import { ZodRoomMapServer } from 'planning-poker-types';
 	import RoomList from '../components/RoomList.svelte';
 
 	export let data;
 
 	$: roomName = '';
 
-	function handleCreateRoom() {
-		// client.rooms.create
-		// 	.mutate({
-		// 		label: '',
-		// 		name: roomName,
-		// 		showVotes: false
-		// 	})
-		// 	.then((data) => {
-		// 		goto(`/room/${data.id}`);
-		// 	});
+	async function handleCreateRoom() {
+		const res = await fetch('/api/rooms', {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				label: '',
+				name: roomName,
+				showVotes: false
+			})
+		});
+		const data = ZodRoomMapServer.parse(await res.json());
+
+		goto(`/room/${data.id}`);
 	}
 
 	$: filteredRooms = data.rooms.filter((room) =>
@@ -28,7 +35,7 @@
 	<form on:submit|preventDefault={handleCreateRoom}>
 		<label class="RoomInput">
 			Create or filter rooms:
-			<input required type="text" bind:value={roomName} />
+			<input name="roomName" required type="text" bind:value={roomName} />
 		</label>
 
 		<button class="RoomCreate" disabled={!roomName.length} type="submit">
