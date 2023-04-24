@@ -1,4 +1,3 @@
-import urlData from '@fastify/url-data';
 import fastify, { FastifyInstance } from 'fastify';
 // import { getEnvConfig } from '../config/env';
 import displayRoutes from '../routes/displays';
@@ -10,8 +9,6 @@ let server: null | FastifyInstance = null;
 
 export async function createServer() {
   if (!server) server = await fastify({ logger: true });
-
-  await server.register(urlData);
 
   await server.register(webSockets, {
     options: {
