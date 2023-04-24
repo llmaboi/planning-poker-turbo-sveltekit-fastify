@@ -9,5 +9,8 @@
     }
   },
   "isModule": true,
-  "sourceMaps": true
+  "sourceMaps": true,
+  "module": {
+    "type": "commonjs"
+  }
 }

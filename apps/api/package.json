@@ -5,8 +5,9 @@
   "main": "src/index.ts",
   "types": "src/index.d.ts",
   "scripts": {
-    "dev": "NODE_ENV=test nodemon src/index.ts",
+    "dev": "dotenv -e ../../.env nodemon src/index.ts",
     "build": "npx swc ./src --out-dir dist",
+    "preview": "dotenv -e ../../.env nodemon dist/index.js",
     "lint": "eslint \"**/*.ts*\" --max-warnings 0 .",
     "lint:fix": "eslint --fix \"**/*.{js,ts,tsx}\"",
     "prettier": "prettier \"**/*.{js,ts,tsx,md,html,css,scss,json}\" --check --loglevel warn",
@@ -32,7 +33,8 @@
     "tsconfig": "*",
     "eslint-config-custom": "*",
     "ts-node": "^10.9.1",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "dotenv-cli": "^7.2.1"
   },
   "dependencies": {
     "@fastify/websocket": "^7.2.0",

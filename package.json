@@ -1,8 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
+    "build": "dotenv -- turbo run build",
+    "dev": "dotenv -c -e ./.env -- turbo run dev",
+    "preview": "dotenv -- turbo run preview",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
@@ -12,7 +13,9 @@
     "eslint": "^7.32.0",
     "eslint-config-custom": "*",
     "prettier": "^2.5.1",
-    "turbo": "latest"
+    "turbo": "latest",
+    "dotenv": "^16.0.3",
+    "dotenv-cli": "^7.2.1"
   },
   "name": "planning-poker-turbo-sveltekit-fastify",
   "packageManager": "npm@8.19.3",

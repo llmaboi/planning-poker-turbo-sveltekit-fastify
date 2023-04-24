@@ -9,10 +9,16 @@ async function start() {
 
     // TODO: I'm not sure if this is correct
     // server.listen({ port: envConfig.SERVER_PORT, host: '0.0.0.0' }, () => {
-    server.listen({ port: 4040, host: '0.0.0.0' }, () => {
-      console.log('Server started...');
-      server.printRoutes();
-    });
+    server.listen(
+      {
+        port: parseInt(process.env.VITE_API_PORT!),
+        host: process.env.VITE_API_URL,
+      },
+      () => {
+        console.log('Server started...');
+        server.printRoutes();
+      }
+    );
   } catch (error) {
     console.log('Server not started...');
     console.error(error);
