@@ -15,8 +15,7 @@
     "preview": {
       "cache": false,
       "persistent": true,
-      "env": ["VITE_API_URL", "VITE_API_PORT"],
-      "dependsOn": ["^build"]
+      "env": ["VITE_API_URL", "VITE_API_PORT"]
     }
   },
   "globalEnv": ["GITHUB_TOKEN", "VITE_API_URL", "VITE_API_PORT"]
