@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "dotenv -e ../../.env nodemon src/index.ts",
     "build": "swc ./src --out-dir dist",
-    "preview": "dotenv -e ../../.env nodemon dist/index.js",
+    "preview": "dotenv -e ../../.env node dist/index.js",
     "lint": "eslint \"**/*.ts*\" --max-warnings 0 .",
     "lint:fix": "eslint --fix \"**/*.{js,ts,tsx}\"",
     "prettier": "prettier \"**/*.{js,ts,tsx,md,html,css,scss,json}\" --check --loglevel warn",
