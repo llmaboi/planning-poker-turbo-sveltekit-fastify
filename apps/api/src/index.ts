@@ -6,12 +6,15 @@ async function start() {
 
   try {
     const server = await createServer();
+    const port = process.env.VITE_API_PORT
+      ? parseInt(process.env.VITE_API_PORT)
+      : undefined;
 
     // TODO: I'm not sure if this is correct
     // server.listen({ port: envConfig.SERVER_PORT, host: '0.0.0.0' }, () => {
     server.listen(
       {
-        port: parseInt(process.env.VITE_API_PORT!),
+        port,
         host: process.env.VITE_API_URL,
       },
       () => {
