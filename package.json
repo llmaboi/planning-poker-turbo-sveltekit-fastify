@@ -5,6 +5,7 @@
     "build:api": "dotenv -- turbo run build --filter={apps/api}",
     "dev": "dotenv -c -e ./.env -- turbo run dev",
     "preview": "dotenv -- turbo run preview",
+    "preview:api": "dotenv -- turbo run preview --filter={apps/api}",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
