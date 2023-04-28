@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { ZodRoomMapServer, type Display } from 'planning-poker-types';
 	import { onMount } from 'svelte';
+	import { API_URL } from '../../../apiUrl';
 
 	export let data;
 
@@ -18,7 +19,7 @@
 	});
 
 	async function handleSubmit() {
-		const res = await fetch('/api/displays', {
+		const res = await fetch(API_URL + '/api/displays', {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',

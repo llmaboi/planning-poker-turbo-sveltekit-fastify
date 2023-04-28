@@ -1,8 +1,9 @@
 import { error } from '@sveltejs/kit';
 import { ZodRoomMapServer, type RoomMapServer } from 'planning-poker-types';
+import { API_URL } from '../apiUrl';
 
 export const load = async ({ fetch }) => {
-	const res = await fetch('/api/rooms');
+	const res = await fetch(API_URL + '/api/rooms');
 	const data = await res.json();
 
 	const rooms: RoomMapServer[] = [];
