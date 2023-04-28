@@ -16,6 +16,8 @@ COPY packages ./packages
 
 RUN npm ci --omit=dev
 
+RUN npm build:api
+
 EXPOSE $VITE_API_PORT
 
 CMD ["node", "apps/api/dist"]
