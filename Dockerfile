@@ -14,9 +14,9 @@ COPY package*.json ./
 COPY apps/api ./apps/api
 COPY packages ./packages
 
-RUN npm ci --omit=dev
+RUN npm i
 
-RUN npm build:api
+RUN npm run build:api
 
 EXPOSE $VITE_API_PORT
 
