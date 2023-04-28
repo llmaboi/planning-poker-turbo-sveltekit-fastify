@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "build": "dotenv -- turbo run build",
+    "build:web": "turbo run build -- -f={apps/web}",
     "dev": "dotenv -c -e ./.env -- turbo run dev",
     "preview": "dotenv -- turbo run preview",
     "lint": "turbo run lint",
