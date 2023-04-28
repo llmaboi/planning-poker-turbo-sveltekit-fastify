@@ -16,7 +16,7 @@ COPY packages ./packages
 
 RUN npm i
 
-RUN npm run build:api
+RUN npm run build --workspace api
 
 EXPOSE $VITE_API_PORT
 
