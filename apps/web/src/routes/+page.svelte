@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { ZodRoomMapServer } from 'planning-poker-types';
 	import RoomList from '../components/RoomList.svelte';
-	import { API_URL } from '../apiUrl';
+	import { API_URL } from '../../apiUrl';
 
 	export let data;
 
