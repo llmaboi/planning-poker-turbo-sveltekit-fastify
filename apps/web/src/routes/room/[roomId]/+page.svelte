@@ -19,7 +19,7 @@
 	});
 
 	async function handleSubmit() {
-		const res = await fetch(`http://${API_URL}/displays`, {
+		const res = await fetch(`${API_URL}/displays`, {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',

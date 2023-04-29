@@ -9,7 +9,7 @@
 	$: roomName = '';
 
 	async function handleCreateRoom() {
-		const res = await fetch(`http://${API_URL}/rooms`, {
+		const res = await fetch(`${API_URL}/rooms`, {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',

@@ -36,7 +36,9 @@
 		currentDisplay = foundDisplay;
 
 		const socket = new WebSocket(
-			`ws://${API_URL}/rooms/${data.room.id}/${data.currentDisplay.name}/socket`
+			`ws://${API_URL.replace(/http*:\/\//g, '')}/rooms/${data.room.id}/${
+				data.currentDisplay.name
+			}/socket`
 		);
 
 		// Connection opened
@@ -61,7 +63,7 @@
 	});
 
 	async function resetSelection() {
-		await fetch(`http://${API_URL}/displays`, {
+		await fetch(`${API_URL}/displays`, {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',
@@ -76,7 +78,7 @@
 	}
 
 	async function updateDisplayCard(number: number) {
-		await fetch(`http://${API_URL}/displays`, {
+		await fetch(`${API_URL}/displays`, {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',

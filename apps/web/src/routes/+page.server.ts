@@ -3,7 +3,7 @@ import { ZodRoomMapServer, type RoomMapServer } from 'planning-poker-types';
 import { API_URL } from '$lib/apiUrl';
 
 export const load = async ({ fetch }) => {
-	const res = await fetch(`http://${API_URL}/rooms`);
+	const res = await fetch(`${API_URL}/rooms`);
 	const data = await res.json();
 
 	const rooms: RoomMapServer[] = [];
