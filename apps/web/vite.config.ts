@@ -14,11 +14,6 @@ export default defineConfig(({ mode }) => {
 	}
 
 	return {
-		server: {
-			proxy: {
-				'/api': `http://${process.env.VITE_API_URL}`
-			}
-		},
 		plugins: [sveltekit()]
 	};
 });

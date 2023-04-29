@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { API_URL } from '$lib/apiUrl';
 	import type { Room } from 'planning-poker-types';
 	import { onMount } from 'svelte';
 
@@ -13,7 +14,7 @@
 
 	async function handleLabelUpdate() {
 		isLoading = true;
-		await fetch(`/api/rooms/${data.room.id}`, {
+		await fetch(`${API_URL}/rooms/${data.room.id}`, {
 			method: 'PATCH',
 			headers: {
 				Accept: 'application/json',
@@ -32,7 +33,7 @@
 
 	async function handleCardReset() {
 		isLoading = true;
-		await fetch(`/api/rooms/${data.room.id}/card-reset`, {
+		await fetch(`${API_URL}/rooms/${data.room.id}/card-reset`, {
 			method: 'PATCH',
 			headers: {
 				Accept: 'application/json'
@@ -47,7 +48,7 @@
 
 	async function handleShowVotes() {
 		isLoading = true;
-		await fetch(`/api/rooms/${data.room.id}`, {
+		await fetch(`${API_URL}/rooms/${data.room.id}`, {
 			method: 'PATCH',
 			headers: {
 				Accept: 'application/json',

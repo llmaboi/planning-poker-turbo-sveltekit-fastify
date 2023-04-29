@@ -2,13 +2,14 @@
 	import { goto } from '$app/navigation';
 	import { ZodRoomMapServer } from 'planning-poker-types';
 	import RoomList from '../components/RoomList.svelte';
+	import { API_URL } from '$lib/apiUrl';
 
 	export let data;
 
 	$: roomName = '';
 
 	async function handleCreateRoom() {
-		const res = await fetch('/api/rooms', {
+		const res = await fetch(`${API_URL}/rooms`, {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',

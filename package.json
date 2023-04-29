@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "build": "dotenv -- turbo run build",
-    "build:api": "dotenv -- turbo run build --filter={apps/api}",
+    "build:web": "turbo run build -- -f={apps/web}",
     "dev": "dotenv -c -e ./.env -- turbo run dev",
     "preview": "dotenv -- turbo run preview",
     "preview:api": "dotenv -- turbo run preview --filter={apps/api}",
@@ -12,12 +12,12 @@
   "devDependencies": {
     "@swc/cli": "^0.1.62",
     "@swc/core": "^1.3.53",
+    "dotenv": "^16.0.3",
+    "dotenv-cli": "^7.2.1",
     "eslint": "^7.32.0",
     "eslint-config-custom": "*",
     "prettier": "^2.5.1",
-    "turbo": "latest",
-    "dotenv": "^16.0.3",
-    "dotenv-cli": "^7.2.1"
+    "turbo": "latest"
   },
   "name": "planning-poker-turbo-sveltekit-fastify",
   "packageManager": "npm@8.19.3",
