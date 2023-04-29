@@ -12,7 +12,7 @@ async function start() {
       : undefined;
 
     server.register(cors, {
-      origin: 'https://planning-poker-turbo-sveltekit-fastify.pages.dev/',
+      origin: 'https://planning-poker-turbo-sveltekit-fastify.pages.dev',
     });
 
     // TODO: I'm not sure if this is correct
