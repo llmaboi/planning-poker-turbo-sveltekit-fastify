@@ -15,7 +15,7 @@
 
 	<section class="Rooms">
 		{#each rooms as room}
-			<button on:click={() => goToRoom(room.name)}>{room.name}</button>
+			<button on:click={() => goToRoom(room.name.replace(' ', '-'))}>{room.name}</button>
 		{/each}
 	</section>
 </section>
