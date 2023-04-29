@@ -25,18 +25,19 @@
     "@types/ws": "^8.5.3",
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "@typescript-eslint/parser": "^5.41.0",
+    "dotenv-cli": "^7.2.1",
     "eslint": "^8.26.0",
+    "eslint-config-custom": "*",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "nodemon": "^2.0.22",
     "prettier": "^2.8.7",
-    "tsconfig": "*",
-    "eslint-config-custom": "*",
     "ts-node": "^10.9.1",
-    "typescript": "^5.0.4",
-    "dotenv-cli": "^7.2.1"
+    "tsconfig": "*",
+    "typescript": "^5.0.4"
   },
   "dependencies": {
+    "@fastify/cors": "^8.2.1",
     "@fastify/websocket": "^7.2.0",
     "dotenv": "^16.0.3",
     "fastify": "^4.15.0",
