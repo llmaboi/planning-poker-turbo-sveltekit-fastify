@@ -11,7 +11,7 @@ async function start() {
       ? parseInt(process.env.VITE_API_PORT)
       : undefined;
 
-    server.register(cors, {
+    await server.register(cors, {
       origin: 'https://planning-poker-turbo-sveltekit-fastify.pages.dev',
     });
 
