@@ -10,7 +10,7 @@
 		type RoomMapServer
 	} from 'planning-poker-types';
 	import { onMount } from 'svelte';
-	import { API_URL } from '../../../../../apiUrl';
+	import { API_URL } from '$lib/apiUrl';
 
 	export let data;
 
@@ -35,9 +35,8 @@
 
 		currentDisplay = foundDisplay;
 
-		const socketUrl = API_URL.replace('http://', '');
 		const socket = new WebSocket(
-			`ws://${socketUrl}/api/rooms/${data.room.id}/${data.currentDisplay.name}/socket`
+			`ws://${API_URL}/rooms/${data.room.id}/${data.currentDisplay.name}/socket`
 		);
 
 		// Connection opened
@@ -62,7 +61,7 @@
 	});
 
 	async function resetSelection() {
-		await fetch(API_URL + '/api/displays', {
+		await fetch(`http://${API_URL}/displays`, {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',
@@ -77,7 +76,7 @@
 	}
 
 	async function updateDisplayCard(number: number) {
-		await fetch(API_URL + '/api/displays', {
+		await fetch(`http://${API_URL}/displays`, {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',
