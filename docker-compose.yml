@@ -1,0 +1,16 @@
+# docker compose --env-file ./.env.test  up
+version: '1.0'
+services:
+### Node Container
+  node:
+    env_file:
+      - ./.env 
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # dockerfile: dockerfile
+      args:
+        - VITE_API_URL=${VITE_API_URL}
+        - VITE_API_PORT=${VITE_API_PORT}
+    ports:
+      - ${VITE_API_PORT}:${VITE_API_PORT}
