@@ -35,11 +35,8 @@
 
 		currentDisplay = foundDisplay;
 
-		const prefix = import.meta.env.DEV ? 'ws' : 'wss';
 		const socket = new WebSocket(
-			`${prefix}://${API_URL.replace(/http*:\/\//g, '')}/rooms/${data.room.id}/${
-				data.currentDisplay.name
-			}/socket`
+			`${API_URL.replace('http', 'ws')}/rooms/${data.room.id}/${data.currentDisplay.name}/socket`
 		);
 
 		// Connection opened
