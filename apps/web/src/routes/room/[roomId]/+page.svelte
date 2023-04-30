@@ -3,6 +3,8 @@
 	import { ZodRoomMapServer, type Display } from 'planning-poker-types';
 	import { onMount } from 'svelte';
 	import { API_URL } from '$lib/apiUrl';
+	import DisplayList from '@components/DisplayList.svelte';
+	import { SlideToggle } from '@skeletonlabs/skeleton';
 
 	export let data;
 
@@ -39,72 +41,17 @@
 	}
 </script>
 
-<section class="DisplayLogin">
-	<form on:submit|preventDefault={handleSubmit}>
-		<label>
-			Your Display Name:
-			<input class="DisplayInput" required type="text" bind:value={displayName} />
-		</label>
+<form on:submit|preventDefault={handleSubmit} class="grid gap-4 justify-items-center text-center">
+	<label class="label">
+		Your Display Name:
+		<input class="input" required type="text" bind:value={displayName} />
+	</label>
 
-		<label class="Checkbox">
-			<input type="checkbox" bind:checked={isHost} />
-			Room Host
-		</label>
+	<SlideToggle name="slider-label" bind:checked={isHost}>Room Host</SlideToggle>
 
-		<button disabled={!displayName.length} type="submit">Join room</button>
-	</form>
-</section>
+	<button class="btn variant-ghost-primary" disabled={!displayName.length} type="submit">
+		Join room
+	</button>
+</form>
 
-<!-- TODO: Move to component -->
-<section class="DisplaysInRoom">
-	{#if displays.length > 0}
-		<h3>Current displays in {roomName}</h3>
-		<ul>
-			{#each displays as display}
-				<li>{display.name}</li>
-			{/each}
-		</ul>
-	{:else}
-		<h3>There are no displays currently in {roomName}</h3>
-	{/if}
-</section>
-
-<style>
-	.DisplaysInRoom {
-		background-color: #34495e;
-		padding: 4rem;
-	}
-
-	form {
-		display: flex;
-		align-items: center;
-		flex-direction: column;
-	}
-
-	form label {
-		margin: 0.25rem auto;
-	}
-
-	.DisplayInput {
-		display: flex;
-	}
-
-	.Checkbox {
-		cursor: pointer;
-	}
-
-	h3 {
-		text-align: center;
-		margin: 1rem auto;
-	}
-
-	ul {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-evenly;
-	}
-	li {
-		margin: 0.5rem;
-		display: inline-flex;
-	}
-</style>
+<DisplayList {displays} {roomName} />

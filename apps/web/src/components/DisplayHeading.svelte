@@ -2,7 +2,6 @@
 	import { goto } from '$app/navigation';
 	import { API_URL } from '$lib/apiUrl';
 	import type { Room } from 'planning-poker-types';
-	import { onMount } from 'svelte';
 
 	export let data: { room: Room; isHost: boolean };
 
@@ -64,66 +63,46 @@
 	}
 </script>
 
-<section class="DisplayHeading">
-	<div class="firstRow">
-		{#if data.isHost === true}
-			<label id="room-label">
-				<input
-					placeholder={data.room.label}
-					type="text"
-					disabled={isLoading}
-					bind:value={roomLabel}
-				/>
-			</label>
-
-			<button disabled={isLoading} on:click={handleLabelUpdate}> Update label </button>
-		{:else}
-			<p>Room Label: {data.room.label.length > 0 ? data.room.label : 'No Room Label'}</p>
-		{/if}
-	</div>
-
+<div class="flex gap-4">
 	{#if data.isHost === true}
-		<div class="secondRow">
-			<button disabled={isLoading} on:click={handleCardReset}>Reset cards</button>
+		<label class="label" aria-label="Current Room Label">
+			<input
+				class="input"
+				placeholder={data.room.label}
+				type="text"
+				disabled={isLoading}
+				bind:value={roomLabel}
+			/>
+		</label>
 
-			{#if data.room.showVotes}
-				<button disabled={isLoading} on:click={handleShowVotes}>Hide Votes</button>
-			{:else}
-				<button disabled={isLoading} on:click={handleShowVotes}>Show Votes</button>
-			{/if}
-
-			<button on:click={handleLogout}>Change Room</button>
-		</div>
+		<button class="btn variant-filled" disabled={isLoading} on:click={handleLabelUpdate}>
+			Update label
+		</button>
 	{:else}
-		<div class="secondRow">
-			<button on:click={handleLogout}>Change Room</button>
-		</div>
+		<p>Room Label: {data.room.label.length > 0 ? data.room.label : 'No Room Label'}</p>
 	{/if}
-</section>
+</div>
 
-<style>
-	.DisplayHeading {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-evenly;
-		align-items: center;
-		margin-bottom: 1rem;
-	}
+{#if data.isHost === true}
+	<div class="flex gap-4">
+		<button class="btn variant-soft-tertiary" disabled={isLoading} on:click={handleCardReset}>
+			Reset cards
+		</button>
 
-	.firstRow,
-	.secondRow {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-evenly;
-		align-items: center;
-		width: 50%;
-	}
+		{#if data.room.showVotes}
+			<button class="btn variant-soft-tertiary" disabled={isLoading} on:click={handleShowVotes}>
+				Hide Votes
+			</button>
+		{:else}
+			<button class="btn variant-soft-tertiary" disabled={isLoading} on:click={handleShowVotes}>
+				Show Votes
+			</button>
+		{/if}
 
-	.firstRow {
-		margin: 1rem auto;
-	}
-
-	button {
-		width: auto;
-	}
-</style>
+		<button class="btn variant-soft-tertiary" on:click={handleLogout}>Change Room</button>
+	</div>
+{:else}
+	<div class="flex gap-4">
+		<button class="btn variant-soft-tertiary" on:click={handleLogout}>Change Room</button>
+	</div>
+{/if}

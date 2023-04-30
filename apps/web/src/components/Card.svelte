@@ -8,37 +8,15 @@
 		onClick(number);
 	}
 
-	let className = 'Card';
-	if (buttonDisabled) {
-		className += ' disabled';
-	}
-
-	if (typeof selectedNumber === 'number' && selectedNumber === number) {
-		className = 'Card selected';
-	}
+	const selected = typeof selectedNumber === 'number' && selectedNumber === number;
 </script>
 
-<button class={className} on:click={handleCardClick} disabled={buttonDisabled}>
-	{number}
+<button
+	class={'card card-hover p-8 variant-filled-surface'}
+	on:click={handleCardClick}
+	disabled={buttonDisabled}
+>
+	<h2 class={`${selected ? 'text-success-500' : ''} ${buttonDisabled ? 'text-error-500' : ''}`}>
+		{number}
+	</h2>
 </button>
-
-<style>
-	.Card {
-		align-items: center;
-		border: 0.2rem solid;
-		font-size: 2.5rem;
-		font-weight: bold;
-		height: 15rem;
-		margin: 0.5rem;
-		width: 10rem;
-	}
-
-	.disabled {
-		color: #c8374f;
-		cursor: not-allowed;
-	}
-
-	.selected {
-		color: #2ac348;
-	}
-</style>

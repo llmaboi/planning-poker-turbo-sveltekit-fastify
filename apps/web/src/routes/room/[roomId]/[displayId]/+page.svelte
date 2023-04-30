@@ -2,15 +2,10 @@
 	import Card from '@components/Card.svelte';
 	import DisplayHeading from '@components/DisplayHeading.svelte';
 	import VotingResults from '@components/VotingResults.svelte';
-	import {
-		ZodRoomMapServer,
-		type Display,
-		type Room,
-		type Vote,
-		type RoomMapServer
-	} from 'planning-poker-types';
+	import { ZodRoomMapServer, type Display, type RoomMapServer } from 'planning-poker-types';
 	import { onMount } from 'svelte';
 	import { API_URL } from '$lib/apiUrl';
+	import VotingPieChart from '@components/VotingPieChart.svelte';
 
 	export let data;
 
@@ -24,8 +19,6 @@
 	let room: RoomMapServer;
 	$: room;
 
-	let roomVotes: Vote[] = [];
-
 	onMount(() => {
 		room = data.room;
 		const foundDisplay = room.displays.find((display) => display.name === data.currentDisplay.name);
@@ -35,9 +28,15 @@
 
 		currentDisplay = foundDisplay;
 
-		const socket = new WebSocket(
-			`${API_URL.replace('http', 'ws')}/rooms/${data.room.id}/${data.currentDisplay.name}/socket`
-		);
+		let socketUrl = `${API_URL.replace('http', 'ws')}/rooms/${data.room.id}/${
+			data.currentDisplay.name
+		}/socket`;
+
+		if (import.meta.env.DEV) {
+			socketUrl = `ws://localhost:4040/api/rooms/${data.room.id}/${data.currentDisplay.name}/socket`;
+		}
+
+		const socket = new WebSocket(socketUrl);
 
 		// Connection opened
 		socket.addEventListener('open', function (event) {
@@ -91,49 +90,41 @@
 	}
 </script>
 
-<section class="Room">
-	<h1>{data.room.name}</h1>
+<h2>{data.room.name}</h2>
 
-	{#if typeof room === 'object'}
-		<DisplayHeading data={{ room: room, isHost: currentDisplay?.isHost }} />
-	{/if}
+{#if typeof room === 'object'}
+	<DisplayHeading data={{ room: room, isHost: currentDisplay?.isHost }} />
+{/if}
 
-	<div class="ResetSelection">
-		<button disabled={currentDisplay?.cardValue === 0} on:click={resetSelection}>
-			Reset Selection
-		</button>
-	</div>
+<div class="ResetSelection">
+	<button
+		class="btn variant-filled-primary"
+		disabled={currentDisplay?.cardValue === 0}
+		on:click={resetSelection}
+	>
+		Reset Selection
+	</button>
+</div>
 
-	<section class="RoomCards">
-		{#key currentDisplay?.cardValue}
-			{#each cards as card}
-				<Card
-					buttonDisabled={currentDisplay?.cardValue > 0}
-					number={card}
-					onClick={updateDisplayCard}
-					selectedNumber={currentDisplay?.cardValue ?? 0}
-				/>
-			{/each}
-		{/key}
-	</section>
-
-	{#if room?.showVotes}
-		<VotingResults displays={room.displays} />
-	{/if}
-
-	<section class="PieChart">
-		<!-- TODO: -->
-	</section>
+<section class="grid gap-4 grid-cols-3">
+	{#key currentDisplay?.cardValue}
+		{#each cards as card}
+			<Card
+				buttonDisabled={currentDisplay?.cardValue > 0}
+				number={card}
+				onClick={updateDisplayCard}
+				selectedNumber={currentDisplay?.cardValue ?? 0}
+			/>
+		{/each}
+	{/key}
 </section>
 
-<style>
-	.RoomCards {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-evenly;
-	}
-	.ResetSelection {
-		text-align: center;
-		margin: 1rem auto;
-	}
-</style>
+{#if room?.showVotes}
+	<VotingResults displays={room.displays} />
+{/if}
+
+{#if room?.showVotes && Array.isArray(room?.displays)}
+	{#key room?.displays}
+		<VotingPieChart displays={room.displays} />
+	{/key}
+{/if}
