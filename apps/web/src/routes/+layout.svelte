@@ -1,6 +1,12 @@
 <script lang="ts">
-	import './reset.css';
-	import './main.css';
+	// Your selected Skeleton theme:
+	import '@skeletonlabs/skeleton/themes/theme-vintage.css';
+
+	// This contains the bulk of Skeletons required styles:
+	import '@skeletonlabs/skeleton/styles/all.css';
+
+	// Finally, your application's global stylesheet (sometimes labeled 'app.css')
+	import '../app.postcss';
 </script>
 
 <main class="container">
