@@ -5,6 +5,7 @@
 	import { ZodRoomMapServer, type Display, type RoomMapServer } from 'planning-poker-types';
 	import { onMount } from 'svelte';
 	import { API_URL } from '$lib/apiUrl';
+	import VotingPieChart from '@components/VotingPieChart.svelte';
 
 	export let data;
 
@@ -34,8 +35,6 @@
 		if (import.meta.env.DEV) {
 			socketUrl = `ws://localhost:4040/api/rooms/${data.room.id}/${data.currentDisplay.name}/socket`;
 		}
-
-		console.log('socketUrl: ', socketUrl);
 
 		const socket = new WebSocket(socketUrl);
 
@@ -98,7 +97,11 @@
 {/if}
 
 <div class="ResetSelection">
-	<button class="btn variant-filled-primary" disabled={currentDisplay?.cardValue === 0} on:click={resetSelection}>
+	<button
+		class="btn variant-filled-primary"
+		disabled={currentDisplay?.cardValue === 0}
+		on:click={resetSelection}
+	>
 		Reset Selection
 	</button>
 </div>
@@ -120,7 +123,8 @@
 	<VotingResults displays={room.displays} />
 {/if}
 
-<!--  -->
-<section class="PieChart">
-	<!-- TODO: -->
-</section>
+{#if room?.showVotes && Array.isArray(room?.displays)}
+	{#key room?.displays}
+		<VotingPieChart displays={room.displays} />
+	{/key}
+{/if}

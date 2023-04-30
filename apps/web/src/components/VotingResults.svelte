@@ -3,6 +3,7 @@
 	import VoteItem from './VoteItem.svelte';
 
 	export let displays: Display[];
+
 	let votes: Vote[];
 	$: votes = displays.map((display) => ({
 		name: display.name,
