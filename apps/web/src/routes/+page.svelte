@@ -31,40 +31,20 @@
 	);
 </script>
 
-<section class="RoomLogin">
-	<h1 class="Heading">Search for or select your room</h1>
-	<form on:submit|preventDefault={handleCreateRoom}>
-		<label class="RoomInput">
-			Create or filter rooms:
-			<input name="roomName" required type="text" bind:value={roomName} />
-		</label>
+<h2>Search for or select your room</h2>
 
-		<button class="RoomCreate" disabled={!roomName.length} type="submit">
-			Create or Join Room
-		</button>
-	</form>
-</section>
+<form
+	on:submit|preventDefault={handleCreateRoom}
+	class="grid gap-4 justify-items-center text-center"
+>
+	<label class="label">
+		<span>Create or filter rooms:</span>
+		<input name="roomName" class="input" required type="text" bind:value={roomName} />
+	</label>
+
+	<button class="btn variant-ghost-primary" disabled={!roomName.length} type="submit">
+		Create or Join Room
+	</button>
+</form>
 
 <RoomList rooms={filteredRooms} />
-
-<style>
-	.RoomLogin {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-
-	.RoomCreate {
-		margin-top: 1rem;
-	}
-
-	form,
-	.RoomInput {
-		display: flex;
-		align-items: center;
-		flex-direction: column;
-	}
-	.RoomInput {
-		font-size: 2rem;
-	}
-</style>
