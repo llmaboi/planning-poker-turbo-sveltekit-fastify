@@ -1,28 +1,47 @@
-# Turborepo starter
+# Planning Poker
 
-This is an official starter Turborepo.
+A simple project for all of your story pointing needs! This is a template which you may fork, customize and stand up your own server with.
 
 ## Using this example
 
-Run the following command:
+- Clone the repository.
+- Install packages, using your package manager of choice, `npm`, `pnpm`, or `yarn`.
+- Run `npm run dev`, `pnpm dev`, `yarn dev`.
 
-```sh
-npx create-turbo@latest
+### Env variable
+
+This package does use `.env` | `.env.local` files in order to inject useable values. You will have to manually add this file to get it up and running.
+
+`.env.local`
+
+```shell
+VITE_API_URL="0.0.0.0"
+VITE_API_PORT="4040"
+NODE_VERSION=18
+# The following are not required for local dev, but REQUIRED for production
+VITE_FULL_API_URL="https://your_api.com/api"
+# For allowing CORS in production.
+VITE_WEB_URL='https://your_web_url.com'
 ```
+
+In a production environment these values will have to be changed to your own server details.
 
 ## What's inside?
 
-This Turborepo includes the following packages/apps:
+A simple Turborepo project with TypeScript as a focus. There are two primary locations within the project, `apps` which are runnable applications, and `packages` which are shared configurations.
 
-### Apps and Packages
+### apps
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `ui`: a stub React component library shared by both `web` and `docs` applications
-- `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
+- `api`: a [fastify](https://www.fastify.io/) server
+- `web`: a [SvelteKit](https://kit.svelte.dev/) application using [SkeletonUi](https://www.skeleton.dev/docs/get-started)
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+### packages
+
+- `eslint-config-custom`: a custom sharable configuration for eslint
+- `planning-poker-types`: shared zod and typescript types
+- `tsconfig`: shared tsconfig
+
+Each package/app should be 100% [TypeScript](https://www.typescriptlang.org/).
 
 ### Utilities
 
@@ -37,8 +56,8 @@ This Turborepo has some additional tools already setup for you:
 To build all apps and packages, run the following command:
 
 ```
-cd my-turborepo
-pnpm build
+cd planning-poker-turbo-sveltekit-fastify
+npm run build
 ```
 
 ### Develop
@@ -46,27 +65,8 @@ pnpm build
 To develop all apps and packages, run the following command:
 
 ```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
+cd planning-poker-turbo-sveltekit-fastify
+npm run dev
 ```
 
 ## Useful Links

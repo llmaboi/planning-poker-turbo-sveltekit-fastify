@@ -4,7 +4,12 @@
   "pipeline": {
     "build": {
       "outputs": [".next/**", "!.next/cache/**"],
-      "env": ["VITE_API_URL", "VITE_API_PORT"]
+      "env": [
+        "VITE_API_URL",
+        "VITE_API_PORT",
+        "VITE_FULL_API_URL",
+        "VITE_WEB_URL"
+      ]
     },
     "lint": {},
     "dev": {
@@ -18,5 +23,11 @@
       "env": ["VITE_API_URL", "VITE_API_PORT"]
     }
   },
-  "globalEnv": ["GITHUB_TOKEN", "VITE_API_URL", "VITE_API_PORT"]
+  "globalEnv": [
+    "GITHUB_TOKEN",
+    "VITE_API_URL",
+    "VITE_API_PORT",
+    "VITE_FULL_API_URL",
+    "VITE_WEB_URL"
+  ]
 }

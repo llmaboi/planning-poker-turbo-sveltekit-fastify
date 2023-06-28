@@ -4,6 +4,7 @@
     "build": "dotenv -- turbo run build",
     "build:web": "turbo run build -- -f={apps/web}",
     "dev": "dotenv -c -e ./.env -- turbo run dev",
+    "dev:web": "dotenv -c -e ./.env -- turbo run dev -- -f={apps/web}",
     "preview": "dotenv -- turbo run preview",
     "preview:api": "dotenv -- turbo run preview --filter={apps/api}",
     "lint": "turbo run lint",

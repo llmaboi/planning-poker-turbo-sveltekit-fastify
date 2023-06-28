@@ -42,6 +42,6 @@
 	"dependencies": {
 		"@sveltejs/adapter-cloudflare": "^2.2.1",
 		"data-types": "^1.0.10",
-		"planning-poker-types": "^0.0.0"
+		"planning-poker-types": "*"
 	}
 }
