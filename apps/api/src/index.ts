@@ -11,9 +11,12 @@ async function start() {
       ? parseInt(process.env.VITE_API_PORT)
       : undefined;
 
-    await server.register(cors, {
-      origin: 'https://planning-poker-turbo-sveltekit-fastify.pages.dev',
-    });
+    const corsOrigin = process.env.VITE_WEB_URL;
+    if (typeof corsOrigin === 'string' && corsOrigin.length > 0) {
+      await server.register(cors, {
+        origin: corsOrigin,
+      });
+    }
 
     // TODO: I'm not sure if this is correct
     // server.listen({ port: envConfig.SERVER_PORT, host: '0.0.0.0' }, () => {

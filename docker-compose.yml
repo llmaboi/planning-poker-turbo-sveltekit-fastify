@@ -12,5 +12,6 @@ services:
       args:
         - VITE_API_URL=${VITE_API_URL}
         - VITE_API_PORT=${VITE_API_PORT}
+        - VITE_WEB_URL=${VITE_WEB_URL}
     ports:
       - ${VITE_API_PORT}:${VITE_API_PORT}

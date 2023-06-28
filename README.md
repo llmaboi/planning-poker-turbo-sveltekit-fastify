@@ -8,6 +8,24 @@ A simple project for all of your story pointing needs! This is a template which 
 - Install packages, using your package manager of choice, `npm`, `pnpm`, or `yarn`.
 - Run `npm run dev`, `pnpm dev`, `yarn dev`.
 
+### Env variable
+
+This package does use `.env` | `.env.local` files in order to inject useable values. You will have to manually add this file to get it up and running.
+
+`.env.local`
+
+```shell
+VITE_API_URL="0.0.0.0"
+VITE_API_PORT="4040"
+NODE_VERSION=18
+# The following are not required for local dev, but REQUIRED for production
+VITE_FULL_API_URL="https://your_api.com/api"
+# For allowing CORS in production.
+VITE_WEB_URL='https://your_web_url.com'
+```
+
+In a production environment these values will have to be changed to your own server details.
+
 ## What's inside?
 
 A simple Turborepo project with TypeScript as a focus. There are two primary locations within the project, `apps` which are runnable applications, and `packages` which are shared configurations.
