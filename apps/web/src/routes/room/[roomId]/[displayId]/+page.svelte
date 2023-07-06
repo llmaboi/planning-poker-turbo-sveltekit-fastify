@@ -40,12 +40,13 @@
 
 		// Connection opened
 		socket.addEventListener('open', function (event) {
-			console.log("It's open");
+			//
 		});
 
 		// Listen for messages
 		socket.addEventListener('message', function (event) {
 			const newData = JSON.parse(event.data);
+
 			const updatedRoom = ZodRoomMapServer.parse(newData);
 			const updatedDisplay = updatedRoom.displays.find(
 				(display) => display.name === data.currentDisplay.name
@@ -119,12 +120,12 @@
 	{/key}
 </section>
 
-{#if room?.showVotes}
-	<VotingResults displays={room.displays} />
-{/if}
+{#key room?.displays}
+	{#if room?.showVotes}
+		<VotingResults displays={room.displays} />
+	{/if}
 
-{#if room?.showVotes && Array.isArray(room?.displays)}
-	{#key room?.displays}
+	{#if room?.showVotes && Array.isArray(room?.displays)}
 		<VotingPieChart displays={room.displays} />
-	{/key}
-{/if}
+	{/if}
+{/key}
