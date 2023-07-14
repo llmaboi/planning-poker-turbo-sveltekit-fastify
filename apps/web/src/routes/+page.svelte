@@ -1,30 +1,10 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { ZodRoomMapServer } from 'planning-poker-types';
+	import { enhance } from '$app/forms';
 	import RoomList from '../components/RoomList.svelte';
-	import { API_URL } from '$lib/apiUrl';
 
 	export let data;
 
 	$: roomName = '';
-
-	async function handleCreateRoom() {
-		const res = await fetch(`${API_URL}/rooms`, {
-			method: 'POST',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				label: '',
-				name: roomName,
-				showVotes: false
-			})
-		});
-		const data = ZodRoomMapServer.parse(await res.json());
-
-		goto(`/room/${data.id}`);
-	}
 
 	$: filteredRooms = data.rooms.filter((room) =>
 		room.name.toLowerCase().includes(roomName.toLowerCase())
@@ -33,10 +13,7 @@
 
 <h2>Search for or select your room</h2>
 
-<form
-	on:submit|preventDefault={handleCreateRoom}
-	class="grid gap-4 justify-items-center text-center"
->
+<form method="POST" class="grid gap-4 justify-items-center text-center" use:enhance>
 	<label class="label">
 		<span>Create or filter rooms:</span>
 		<input name="roomName" class="input" required type="text" bind:value={roomName} />
