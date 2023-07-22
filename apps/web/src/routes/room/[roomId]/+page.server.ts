@@ -12,10 +12,10 @@ export const load = async ({ fetch, params }) => {
 };
 
 export const actions = {
-	default: async ({ request, params }) => {
+	default: async ({ request, params, url }) => {
 		const data = await request.formData();
 		const displayName = data.get('displayName');
-		const isHostForm = data.get('isHost');
+		const isHost = url.searchParams.get('isHost') === 'true';
 
 		if (
 			displayName === null ||
@@ -25,11 +25,6 @@ export const actions = {
 		}
 
 		const trimmedName = String(displayName).trim();
-		let isHost = false;
-
-		if (typeof isHostForm === 'string' && isHostForm === 'on') {
-			isHost = true;
-		}
 
 		const res = await fetch(`${API_URL}/displays`, {
 			method: 'POST',
@@ -46,7 +41,12 @@ export const actions = {
 		});
 
 		const room = ZodRoomMapServer.parse(await res.json());
+		const display = room.displays.find((d) => d.name === trimmedName);
 
-		throw redirect(303, `/room/${room.id}/${displayName}`);
+		if (display === undefined) {
+			throw new Error('Could not route to this display');
+		}
+
+		throw redirect(303, `/room/${room.id}/${display.name}?selected=${display.cardValue}`);
 	}
 };
