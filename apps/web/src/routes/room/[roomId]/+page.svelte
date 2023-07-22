@@ -11,8 +11,18 @@
 
 <form method="POST" use:enhance class="grid gap-4 justify-items-center text-center">
 	<label class="label">
-		Your Display Name:
-		<input name="displayName" class="input" required type="text" value={form?.displayName ?? ''} />
+		<span>Your Display Name:</span>
+		<input
+			name="displayName"
+			class="input"
+			class:input-error={form?.missing}
+			type="text"
+			value={form?.displayName ?? ''}
+		/>
+
+		{#if form?.missing}
+			<p class="error text-error-500">You must enter a display name.</p>
+		{/if}
 	</label>
 
 	<SlideToggle name="isHost" checked={form?.isHost}>Room Host</SlideToggle>
