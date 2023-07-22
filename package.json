@@ -18,7 +18,7 @@
     "eslint": "^7.32.0",
     "eslint-config-custom": "*",
     "prettier": "^2.5.1",
-    "turbo": "^1.10.7"
+    "turbo": "^1.10.9"
   },
   "name": "planning-poker-turbo-sveltekit-fastify",
   "packageManager": "npm@8.19.3",
