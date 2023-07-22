@@ -15,13 +15,19 @@ export const actions = {
 	default: async ({ request, params, url }) => {
 		const data = await request.formData();
 		const displayName = data.get('displayName');
-		const isHost = url.searchParams.get('isHost') === 'true';
+		const rawIsHost = data.get('isHost');
+
+		let isHost = false;
+
+		if (rawIsHost === 'on') {
+			isHost = true;
+		}
 
 		if (
 			displayName === null ||
 			(typeof displayName === 'string' && displayName.trim().length === 0)
 		) {
-			return fail(400, { displayName, missing: true });
+			return fail(400, { isHost, displayName, missing: true });
 		}
 
 		const trimmedName = String(displayName).trim();
@@ -47,6 +53,6 @@ export const actions = {
 			throw new Error('Could not route to this display');
 		}
 
-		throw redirect(303, `/room/${room.id}/${display.name}?selected=${display.cardValue}`);
+		throw redirect(303, `/room/${room.id}/${display.name}`);
 	}
 };

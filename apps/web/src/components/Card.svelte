@@ -1,22 +1,18 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+
 	export let number: number;
 	export let selectedNumber: number | undefined;
-	export let buttonDisabled: boolean;
-	export let onClick: (number: number) => void;
-
-	function handleCardClick() {
-		onClick(number);
-	}
 
 	const selected = typeof selectedNumber === 'number' && selectedNumber === number;
+	const isSelectedValid = typeof selectedNumber === 'number' && selectedNumber > 0;
 </script>
 
-<button
-	class={'card card-hover p-8 variant-filled-surface'}
-	on:click={handleCardClick}
-	disabled={buttonDisabled}
->
-	<h2 class={`${selected ? 'text-success-500' : ''} ${buttonDisabled ? 'text-error-500' : ''}`}>
-		{number}
-	</h2>
-</button>
+<form method="POST" action="?/select" use:enhance>
+	<input type="hidden" name="selected" value={number} />
+	<button class={'card card-hover p-8 variant-filled-surface'} type="submit" disabled={isSelectedValid}>
+		<h2 class:text-success-500={selected} class:text-error-500={isSelectedValid}>
+			{number}
+		</h2>
+	</button>
+</form>
