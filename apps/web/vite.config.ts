@@ -14,6 +14,20 @@ export default defineConfig(({ mode }) => {
 	}
 
 	return {
-		plugins: [sveltekit()]
+		plugins: [sveltekit()],
+		define: {
+			// Eliminate in-source test code
+			'import.meta.vitest': 'undefined'
+		},
+		test: {
+			environment: 'jsdom',
+			// Add @testing-library/jest-dom matchers & mocks of SvelteKit modules
+			setupFiles: ['./src/setupTest.ts'],
+			// Exclude files in c8
+			coverage: {
+				exclude: ['src/setupTest.ts']
+			}
+		},
+		root: '.'
 	};
 });

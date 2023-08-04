@@ -21,7 +21,9 @@
       "cache": false,
       "persistent": true,
       "env": ["VITE_API_URL", "VITE_API_PORT"]
-    }
+    },
+    "test": {},
+    "coverage": {}
   },
   "globalEnv": [
     "GITHUB_TOKEN",
