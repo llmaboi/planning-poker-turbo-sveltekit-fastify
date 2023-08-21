@@ -8,7 +8,9 @@
     "preview": "dotenv -- turbo run preview",
     "preview:api": "dotenv -- turbo run preview --filter={apps/api}",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "test": "turbo run test",
+    "coverage": "turbo run coverage"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.62",

@@ -1,15 +1,10 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { goto } from '$app/navigation';
 	import type { Room } from 'planning-poker-types';
 
 	export let data: { room: Room; isHost: boolean };
 
 	let roomLabel = data.room.label;
-
-	function handleLogout() {
-		goto(`/`);
-	}
 </script>
 
 <form method="POST" action="?/label" use:enhance class="flex gap-4">
@@ -46,10 +41,10 @@
 			</button>
 		</form>
 
-		<button class="btn variant-soft-tertiary" on:click={handleLogout}>Change Room</button>
+		<a href="/" class="btn bg-secondary-500 variant-soft-tertiary">Change Room</a>
 	</div>
 {:else}
 	<div class="flex gap-4">
-		<button class="btn variant-soft-tertiary" on:click={handleLogout}>Change Room</button>
+		<a href="/" class="btn bg-secondary-500 variant-soft-tertiary">Change Room</a>
 	</div>
 {/if}
