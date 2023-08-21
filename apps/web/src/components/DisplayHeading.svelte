@@ -1,103 +1,50 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
-	import { API_URL } from '$lib/apiUrl';
 	import type { Room } from 'planning-poker-types';
 
 	export let data: { room: Room; isHost: boolean };
 
-	// TODO: I'm not sure how to do this yet...
-	// TODO: Fix bug with updating label...
-	$: roomLabel = '';
-
-	$: isLoading = false;
-
-	async function handleLabelUpdate() {
-		isLoading = true;
-		await fetch(`${API_URL}/rooms/${data.room.id}`, {
-			method: 'PATCH',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				...data.room,
-				label: roomLabel
-			})
-		});
-
-		roomLabel = '';
-
-		isLoading = false;
-	}
-
-	async function handleCardReset() {
-		isLoading = true;
-		await fetch(`${API_URL}/rooms/${data.room.id}/card-reset`, {
-			method: 'PATCH',
-			headers: {
-				Accept: 'application/json'
-			}
-		});
-		isLoading = false;
-	}
+	let roomLabel = data.room.label;
 
 	function handleLogout() {
 		goto(`/`);
 	}
-
-	async function handleShowVotes() {
-		isLoading = true;
-		await fetch(`${API_URL}/rooms/${data.room.id}`, {
-			method: 'PATCH',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				...data.room,
-				showVotes: !data.room.showVotes
-			})
-		});
-
-		isLoading = false;
-	}
 </script>
 
-<div class="flex gap-4">
+<form method="POST" action="?/label" use:enhance class="flex gap-4">
 	{#if data.isHost === true}
 		<label class="label" aria-label="Current Room Label">
 			<input
 				class="input"
 				placeholder={data.room.label}
 				type="text"
-				disabled={isLoading}
 				bind:value={roomLabel}
+				name="roomLabel"
 			/>
 		</label>
 
-		<button class="btn variant-filled" disabled={isLoading} on:click={handleLabelUpdate}>
-			Update label
-		</button>
+		<button class="btn variant-filled" type="submit">Update label</button>
 	{:else}
 		<p>Room Label: {data.room.label.length > 0 ? data.room.label : 'No Room Label'}</p>
 	{/if}
-</div>
+</form>
 
 {#if data.isHost === true}
 	<div class="flex gap-4">
-		<button class="btn variant-soft-tertiary" disabled={isLoading} on:click={handleCardReset}>
-			Reset cards
-		</button>
+		<form method="POST" action="?/resetAll" use:enhance>
+			<button type="submit" class="btn variant-soft-tertiary">Reset cards</button>
+		</form>
 
-		{#if data.room.showVotes}
-			<button class="btn variant-soft-tertiary" disabled={isLoading} on:click={handleShowVotes}>
-				Hide Votes
+		<form method="POST" action="?/toggleVotes" use:enhance>
+			<button class="btn variant-soft-tertiary">
+				{#if data.room.showVotes}
+					Hide Votes
+				{:else}
+					Show Votes
+				{/if}
 			</button>
-		{:else}
-			<button class="btn variant-soft-tertiary" disabled={isLoading} on:click={handleShowVotes}>
-				Show Votes
-			</button>
-		{/if}
+		</form>
 
 		<button class="btn variant-soft-tertiary" on:click={handleLogout}>Change Room</button>
 	</div>

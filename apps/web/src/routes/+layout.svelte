@@ -23,7 +23,7 @@
 		<AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end">
 			<svelte:fragment slot="lead">{' '}</svelte:fragment>
 
-			<h1>Planning Poker</h1>
+			<h1 class="text-center"><a href="/">Planning Poker</a></h1>
 
 			<svelte:fragment slot="trail"><LightSwitch /></svelte:fragment>
 		</AppBar>

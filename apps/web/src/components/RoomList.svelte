@@ -1,11 +1,7 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import type { RoomMapClient } from 'planning-poker-types';
 
-	export let rooms: { name: string }[];
-
-	function goToRoom(room: string) {
-		goto(`room/${room}`);
-	}
+	export let rooms: RoomMapClient[];
 </script>
 
 <section class="text-center">
@@ -16,12 +12,9 @@
 	<ul class="list-nav grid grid-flow-col gap-2 justify-items-center">
 		{#each rooms as room}
 			<li>
-				<button
-					class="btn variant-ghost-secondary"
-					on:click={() => goToRoom(room.name.replace(' ', '-').toLowerCase())}
-				>
+				<a class="btn variant-ghost-secondary" href={`room/${room.id}`}>
 					{room.name}
-				</button>
+				</a>
 			</li>
 		{/each}
 	</ul>

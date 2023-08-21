@@ -226,3 +226,48 @@ export function addOrUpdateDisplay(roomId: string, display: Display) {
 
   return updatedRoom;
 }
+
+export function updateDisplayCardValue(
+  roomId: string,
+  displayToUpdate: Pick<Display, 'name' | 'cardValue'>
+) {
+  const roomMap = getRoomMap();
+  const oldRoom = roomMap.get(roomId);
+
+  if (typeof oldRoom === 'undefined')
+    throw new Error('room not found -- addOrUpdateDisplay');
+
+  const newDisplays = [...oldRoom.displays];
+
+  const foundDisplayIndex = newDisplays.findIndex(
+    (newDisplays) => displayToUpdate.name === newDisplays.name
+  );
+
+  if (foundDisplayIndex < 0)
+    throw new Error('existing display not found -- updateDisplayCardValue');
+  const foundDisplay = newDisplays[foundDisplayIndex];
+
+  newDisplays.splice(foundDisplayIndex, 1, {
+    ...foundDisplay,
+    cardValue: displayToUpdate.cardValue,
+  });
+
+  roomMap.set(oldRoom.id, { ...oldRoom, displays: newDisplays });
+
+  const updatedRoom = roomMap.get(oldRoom.id);
+
+  if (typeof updatedRoom === 'undefined')
+    throw new Error('room not found -- addOrUpdateDisplay2');
+
+  const sockets = getRoomSockets();
+
+  const foundSocket = sockets.get(roomId);
+
+  if (typeof foundSocket !== 'undefined') {
+    Array.from(foundSocket.values()).forEach((socket) => {
+      socket.send(JSON.stringify(updatedRoom));
+    });
+  }
+
+  return updatedRoom;
+}

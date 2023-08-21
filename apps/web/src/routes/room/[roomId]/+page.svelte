@@ -1,57 +1,33 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { ZodRoomMapServer, type Display } from 'planning-poker-types';
-	import { onMount } from 'svelte';
-	import { API_URL } from '$lib/apiUrl';
+	import { enhance } from '$app/forms';
 	import DisplayList from '@components/DisplayList.svelte';
 	import { SlideToggle } from '@skeletonlabs/skeleton';
 
 	export let data;
+	export let form;
 
-	let roomName = '';
-	let displays: Display[] = [];
-
-	$: displays = [];
-	$: displayName = '';
-	$: isHost = false;
-
-	onMount(() => {
-		displays = data.room.displays;
-		roomName = data.room.name;
-	});
-
-	async function handleSubmit() {
-		const res = await fetch(`${API_URL}/displays`, {
-			method: 'POST',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				roomId: data.room.id,
-				name: displayName,
-				cardValue: 0,
-				isHost
-			})
-		});
-
-		const room = ZodRoomMapServer.parse(await res.json());
-
-		goto(`/room/${room.id}/${displayName}`);
-	}
+	let roomName = data.room.name;
 </script>
 
-<form on:submit|preventDefault={handleSubmit} class="grid gap-4 justify-items-center text-center">
+<form method="POST" use:enhance class="grid gap-4 justify-items-center text-center">
 	<label class="label">
-		Your Display Name:
-		<input class="input" required type="text" bind:value={displayName} />
+		<span>Your Display Name:</span>
+		<input
+			name="displayName"
+			class="input"
+			class:input-error={form?.missing}
+			type="text"
+			value={form?.displayName ?? ''}
+		/>
+
+		{#if form?.missing}
+			<p class="error text-error-500">You must enter a display name.</p>
+		{/if}
 	</label>
 
-	<SlideToggle name="slider-label" bind:checked={isHost}>Room Host</SlideToggle>
+	<SlideToggle name="isHost" checked={form?.isHost}>Room Host</SlideToggle>
 
-	<button class="btn variant-ghost-primary" disabled={!displayName.length} type="submit">
-		Join room
-	</button>
+	<button class="btn variant-ghost-primary" type="submit">Join room</button>
 </form>
 
-<DisplayList {displays} {roomName} />
+<DisplayList displays={data.room.displays} {roomName} />
