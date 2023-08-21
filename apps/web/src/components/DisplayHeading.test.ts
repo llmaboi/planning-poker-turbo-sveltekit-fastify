@@ -18,9 +18,9 @@ describe('Component: Card', () => {
 
 		expect(screen.getByText('Room Label: test label')).toBeInTheDocument();
 
-		const changeRoomButton = screen.getByRole('button', { name: /change room/i });
-		expect(changeRoomButton).toBeInTheDocument();
-		expect(changeRoomButton).not.toBeDisabled();
+		const changeRoomLink = screen.getByRole('link', { name: /change room/i });
+		expect(changeRoomLink).toBeInTheDocument();
+		expect(changeRoomLink).not.toBeDisabled();
 	});
 
 	test('host displays proper buttons', () => {
@@ -39,7 +39,7 @@ describe('Component: Card', () => {
 		const labelInput = screen.getByRole('textbox', { name: /current room label/i });
 		const updateLabelButton = screen.getByRole('button', { name: /update label/i });
 		const resetCardsButton = screen.getByRole('button', { name: /reset cards/i });
-		const changeRoomButton = screen.getByRole('button', { name: /change room/i });
+		const changeRoomLink = screen.getByRole('link', { name: /change room/i });
 
 		expect(labelInput).toBeInTheDocument();
 		expect(labelInput).toHaveValue('test label');
@@ -47,7 +47,7 @@ describe('Component: Card', () => {
 		expect(updateLabelButton).not.toBeDisabled();
 		expect(resetCardsButton).toBeInTheDocument();
 		expect(resetCardsButton).not.toBeDisabled();
-		expect(changeRoomButton).toBeInTheDocument();
-		expect(changeRoomButton).not.toBeDisabled();
+		expect(changeRoomLink).toBeInTheDocument();
+		expect(changeRoomLink).not.toBeDisabled();
 	});
 });
